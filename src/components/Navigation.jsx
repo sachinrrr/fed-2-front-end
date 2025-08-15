@@ -1,30 +1,21 @@
 import { useState } from "react";
 import { Link } from "react-router";
-import { Menu, X, ShoppingBag, Search, User } from "lucide-react";
+import { Menu, X, ShoppingBag } from "lucide-react";
 import { useSelector } from "react-redux";
-// import { useSelector } from "react-redux";
-import { SignedIn, UserButton, SignedOut } from "@clerk/clerk-react";
+import { SignedIn, UserButton, SignedOut, useUser } from "@clerk/clerk-react";
 import ProductSearchForm from "./ProductSearchForm";
 
 export default function Navigation() {
   const cartItems = useSelector((state) => state.cart.cartItems);
+  const { user, isLoaded } = useUser();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  // const cartItems = useSelector((state) => state.cart.value);
 
   // Calculate total quantity of items in cart
   const cartItemCount = cartItems.reduce(
     (total, item) => total + item.quantity,
     0
   );
-
-  // const calculateCartItems = () => {
-  //   const total = 0;
-  //   for (let i = 0; i < array.length; i++) {
-  //     const item = array[i];
-  //     total = total + item.quantity;
-  //   }
-  // };
 
   // Function href close mobile menu
   const closeMobileMenu = () => setIsMenuOpen(false);
@@ -76,6 +67,15 @@ export default function Navigation() {
 
           {/* Icons */}
           <div className="flex items-center space-x-4">
+            {/* Show Create Product button only for Clerk admin */}
+            {isLoaded && user?.publicMetadata?.role === "admin" && (
+              <Link
+                to="/create-product"
+                className="font-medium hover:text-gray-600 border px-2 py-1 rounded"
+              >
+                Create Product
+              </Link>
+            )}
             <ProductSearchForm />
             <Link
               to="/shop/cart"
