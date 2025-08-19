@@ -23,15 +23,30 @@
          });
        },
      }),
+     tagTypes: ['Product', 'Category', 'Color'],
      endpoints: (build) => ({
        getAllProducts: build.query({
-         query: () => `/products`,
+         query: ({ categoryId, colorId, sortBy, sortOrder } = {}) => {
+           const params = new URLSearchParams();
+           if (categoryId) params.append('categoryId', categoryId);
+           if (colorId) params.append('colorId', colorId);
+           if (sortBy) params.append('sortBy', sortBy);
+           if (sortOrder) params.append('sortOrder', sortOrder);
+           return `/products?${params.toString()}`;
+         },
+         providesTags: ['Product'],
        }),
        getProductsBySearch: build.query({
          query: (query) => `/products/search?search=${query}`,
+         providesTags: ['Product'],
        }),
        getAllCategories: build.query({
          query: () => `/categories`,
+         providesTags: ['Category'],
+       }),
+       getAllColors: build.query({
+         query: () => `/colors`,
+         providesTags: ['Color'],
        }),
        createProduct: build.mutation({
          query: (product) => ({
@@ -39,6 +54,7 @@
            method: "POST",
            body: product,
          }),
+         invalidatesTags: ['Product'],
        }),
        createOrder: build.mutation({
          query: (order) => ({
@@ -52,4 +68,4 @@
    
    // Export hooks for usage in functional components, which are
    // auto-generated based on the defined endpoints
-   export const { useGetAllProductsQuery, useGetProductsBySearchQuery, useCreateOrderMutation, useCreateProductMutation, useGetAllCategoriesQuery } = Api;
+   export const { useGetAllProductsQuery, useGetProductsBySearchQuery, useCreateOrderMutation, useCreateProductMutation, useGetAllCategoriesQuery, useGetAllColorsQuery } = Api;
