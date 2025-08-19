@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { BrowserRouter, Route, Routes } from "react-router";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { store } from "./lib/store";
 import { Provider } from "react-redux";
 
@@ -34,13 +34,12 @@ createRoot(document.getElementById("root")).render(
           <Routes>
             <Route element={<RootLayout />}>
               <Route path="/" element={<HomePage />} />
-              <Route path="/shop" element={<ShopPage />}>
-                <Route path=":category" element={<ShopPage />} />
-                <Route path="cart" element={<CartPage />} />
-                <Route element={<ProtectedLayout />}>
-                  <Route path="checkout" element={<CheckoutPage />} />
-                </Route>
+              <Route path="/cart" element={<CartPage />} />
+              <Route element={<ProtectedLayout />}>
+                <Route path="/checkout" element={<CheckoutPage />} />
               </Route>
+              <Route path="/shop" element={<ShopPage />} />
+              <Route path="/shop/:category" element={<ShopPage />} />
               <Route element={<ProtectedLayout />}>
                 <Route element={<AdminProtectedLayout />}>
                   <Route
