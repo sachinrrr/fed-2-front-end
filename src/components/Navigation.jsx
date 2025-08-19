@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import { Menu, X, ShoppingBag } from "lucide-react";
 import { useSelector } from "react-redux";
 import { SignedIn, UserButton, SignedOut, useUser } from "@clerk/clerk-react";
@@ -17,8 +17,35 @@ export default function Navigation() {
     0
   );
 
-  // Function href close mobile menu
+  // Function to close mobile menu
   const closeMobileMenu = () => setIsMenuOpen(false);
+
+  const navigationLinks = [
+    {
+      path: "/shop",
+      label: "Shop All",
+    },
+    {
+      path: "/shop/shoes",
+      label: "Shoes",
+    },
+    {
+      path: "/shop/tshirts",
+      label: "T-Shirt",
+    },
+    {
+      path: "/shop/shorts",
+      label: "Shorts",
+    },
+    {
+      path: "/shop/pants",
+      label: "Pants",
+    },
+    {
+      path: "/shop/socks",
+      label: "Socks",
+    },
+  ];
 
   return (
     <header className="bg-white border-b border-gray-200 px-4 lg:px-16">
@@ -31,38 +58,15 @@ export default function Navigation() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8">
-            {[
-              {
-                path: "/shop/shoes",
-                label: "Shoes",
-              },
-              {
-                path: "/shop/tshirts",
-                label: "T-Shirt",
-              },
-              {
-                path: "/shop/shorts",
-                label: "Shorts",
-              },
-              {
-                path: "/shop/pants",
-                label: "Pants",
-              },
-              {
-                path: "/shop/socks",
-                label: "Socks",
-              },
-            ].map((item) => {
-              return (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className="font-medium hover:text-gray-600"
-                >
-                  {item.label}
-                </Link>
-              );
-            })}
+            {navigationLinks.map((item) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                className="font-medium hover:text-gray-600"
+              >
+                {item.label}
+              </Link>
+            ))}
           </nav>
 
           {/* Icons */}
@@ -70,7 +74,7 @@ export default function Navigation() {
             {/* Show Create Product button only for Clerk admin */}
             {isLoaded && user?.publicMetadata?.role === "admin" && (
               <Link
-                to="/create-product"
+                to="/admin/products/create"
                 className="font-medium hover:text-gray-600 border px-2 py-1 rounded"
               >
                 Create Product
@@ -78,7 +82,7 @@ export default function Navigation() {
             )}
             <ProductSearchForm />
             <Link
-              to="/shop/cart"
+              to="/cart"
               aria-label="Shopping Bag"
               className="p-1 relative"
             >
@@ -115,13 +119,7 @@ export default function Navigation() {
       {isMenuOpen && (
         <div className="md:hidden fixed top-16 left-4 right-4 bg-white z-10">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t border-gray-200">
-            {[
-              { path: "/shop/shoes", label: "Shoes" },
-              { path: "/shop/tshirts", label: "T-Shirt" },
-              { path: "/shop/shorts", label: "Shorts" },
-              { path: "/shop/pants", label: "Pants" },
-              { path: "/shop/socks", label: "Socks" },
-            ].map((item) => (
+            {navigationLinks.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
