@@ -6,7 +6,8 @@
    export const Api = createApi({
      reducerPath: "Api",
      baseQuery: fetchBaseQuery({
-       baseUrl: "http://localhost:8000/api",
+       // Use environment variable instead of hardcoded localhost
+       baseUrl: `${import.meta.env.VITE_BASE_URL}/api`,
        prepareHeaders: async (headers) => {
          return new Promise((resolve) => {
            async function checkToken() {
