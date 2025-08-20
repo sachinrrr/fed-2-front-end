@@ -12,7 +12,6 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const PaymentForm = ({ orderId }) => {
   const fetchClientSecret = useCallback(() => {
-    console.log("Fetching client secret for order:", orderId);
     // Create a Checkout Session
     return fetch(`${BASE_URL}/api/payments/create-checkout-session`, {
       method: "POST",
@@ -21,25 +20,9 @@ const PaymentForm = ({ orderId }) => {
       },
       body: JSON.stringify({ orderId }),
     })
-      .then((res) => {
-        console.log("Response status:", res.status);
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
-        return res.json();
-      })
-      .then((data) => {
-        console.log("Response data:", data);
-        if (!data.clientSecret) {
-          throw new Error("No client secret returned from server");
-        }
-        return data.clientSecret;
-      })
-      .catch((error) => {
-        console.error("Error creating checkout session:", error);
-        throw error;
-      });
-  }, [orderId]);
+      .then((res) => res.json())
+      .then((data) => data.clientSecret);
+  }, []);
 
   const options = { fetchClientSecret };
 
