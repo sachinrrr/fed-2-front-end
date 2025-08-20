@@ -1,9 +1,12 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useState } from "react";
+import { useCreateOrderMutation } from "@/lib/api";
 
 function CheckoutPage() {
   const cart = useSelector((state) => state.cart.cartItems);
+  const navigate = useNavigate();
+  const [createOrder, { isLoading }] = useCreateOrderMutation();
   const [addressLine1, setAddressLine1] = useState("");
   const [addressLine2, setAddressLine2] = useState("");
   const [city, setCity] = useState("");
@@ -12,6 +15,34 @@ function CheckoutPage() {
   if (cart.length === 0) {
     return <Navigate to="/" />;
   }
+
+  const handleProceedToPayment = async () => {
+    // Validate required fields
+    if (!addressLine1.trim() || !city.trim() || !phone.trim()) {
+      alert("Please fill in all required fields (Address Line 1, City, and Phone Number)");
+      return;
+    }
+
+    try {
+      const order = await createOrder({
+        shippingAddress: {
+          line_1: addressLine1,
+          line_2: addressLine2,
+          city: city,
+          phone: phone,
+        },
+        orderItems: cart.map((item) => ({
+          productId: item.product._id,
+          quantity: item.quantity,
+        })),
+      }).unwrap();
+      
+      navigate(`/shop/payment?orderId=${order._id}`);
+    } catch (error) {
+      console.error("Error creating order:", error);
+      alert("Failed to create order. Please try again.");
+    }
+  };
 
   return (
     <main className="px-4 lg:px-16 min-h-screen py-8">
@@ -128,9 +159,11 @@ function CheckoutPage() {
         <div className="bg-gray-50 p-6 rounded-lg">
           <button
             type="button"
-            className="bg-black text-white px-6 py-3 rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 w-full font-medium"
+            onClick={handleProceedToPayment}
+            disabled={isLoading}
+            className="bg-black text-white px-6 py-3 rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 w-full font-medium disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Proceed to Payment
+            {isLoading ? "Creating Order..." : "Proceed to Payment"}
           </button>
         </div>
       </div>
