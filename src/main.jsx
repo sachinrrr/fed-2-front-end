@@ -13,8 +13,6 @@ import ShopPage from "./pages/shop.page.jsx";
 import RootLayout from "./layouts/root.layout.jsx";
 import CartPage from "./pages/cart.page";
 import CheckoutPage from "./pages/checkout.page";
-import PaymentPage from "./pages/payment.page";
-import CompletePage from "./pages/complete.page";
 import ProtectedLayout from "./layouts/protected.layout";
 import CreateProductPage from "./pages/create-product-page";
 import AdminProtectedLayout from "./layouts/admin-protected.layout";
@@ -41,10 +39,6 @@ createRoot(document.getElementById("root")).render(
                 <Route path="/checkout" element={<CheckoutPage />} />
               </Route>
               <Route path="/shop" element={<ShopPage />} />
-              <Route element={<ProtectedLayout />}>
-                <Route path="/shop/payment" element={<PaymentPage />} />
-                <Route path="/shop/complete" element={<CompletePage />} />
-              </Route>
               <Route path="/shop/:category" element={<ShopPage />} />
               <Route element={<ProtectedLayout />}>
                 <Route element={<AdminProtectedLayout />}>

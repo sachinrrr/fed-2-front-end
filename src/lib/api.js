@@ -57,19 +57,16 @@
          }),
          invalidatesTags: ['Product'],
        }),
-             createOrder: build.mutation({
-        query: (order) => ({
-          url: "/orders",
-          method: "POST",
-          body: order,
-        }),
-      }),
-      getCheckoutSessionStatus: build.query({
-        query: (sessionId) => `/payments/session-status?session_id=${sessionId}`,
-      }),
+       createOrder: build.mutation({
+         query: (order) => ({
+           url: "/orders",
+           method: "POST",
+           body: order,
+         }),
+       }),
      }),
    });
    
    // Export hooks for usage in functional components, which are
    // auto-generated based on the defined endpoints
-   export const { useGetAllProductsQuery, useGetProductsBySearchQuery, useCreateOrderMutation, useCreateProductMutation, useGetAllCategoriesQuery, useGetAllColorsQuery, useGetCheckoutSessionStatusQuery } = Api;
+   export const { useGetAllProductsQuery, useGetProductsBySearchQuery, useCreateOrderMutation, useCreateProductMutation, useGetAllCategoriesQuery, useGetAllColorsQuery } = Api;
