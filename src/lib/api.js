@@ -6,8 +6,8 @@
    export const Api = createApi({
      reducerPath: "Api",
      baseQuery: fetchBaseQuery({
-       // Use environment variable instead of hardcoded localhost
-       baseUrl: `${import.meta.env.VITE_BASE_URL}/api`,
+       // Hardcoded URL - will work immediately
+       baseUrl: "https://fed-2-back-end-sachin.onrender.com/api",
        prepareHeaders: async (headers) => {
          return new Promise((resolve) => {
            async function checkToken() {
