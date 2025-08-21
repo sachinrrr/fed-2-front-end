@@ -28,6 +28,7 @@ const createProductFormSchema = z.object({
   categoryId: z.string().min(1, "Category is required"),
   colorId: z.string().optional(),
   name: z.string().min(1, "Product name is required"),
+  description: z.string().min(1, "Product description is required"),
   image: z.string().min(1, "Product image is required"),
   stock: z.number().min(0, "Stock must be 0 or greater"),
   price: z.number().nonnegative("Price must be 0 or greater"),
@@ -43,6 +44,7 @@ function CreateProductForm({ categories }) {
       categoryId: "",
       colorId: "none",
       name: "",
+      description: "",
       image: "",
       stock: 0,
       price: 0,
@@ -61,6 +63,7 @@ function CreateProductForm({ categories }) {
       const productData = {
         categoryId: values.categoryId,
         name: values.name,
+        description: values.description,
         image: values.image,
         stock: values.stock,
         price: values.price,
@@ -173,6 +176,24 @@ function CreateProductForm({ categories }) {
               <FormLabel>Product Name *</FormLabel>
               <FormControl>
                 <Input placeholder="e.g., Classic Denim Jacket" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Product Description *</FormLabel>
+              <FormControl>
+                <textarea
+                  className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  placeholder="Describe the product features, materials, and benefits..."
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
