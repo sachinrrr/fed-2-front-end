@@ -1,11 +1,17 @@
 import { Input } from "./ui/input";
 import { useAuth } from "@clerk/clerk-react";
+import { useState } from "react";
 
 function ImageInput({ onChange, value }) {
   const { getToken } = useAuth();
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState("");
 
   const handleFileChange = async (e) => {
     try {
+      setUploadError("");
+      setUploading(true);
+      
       if (!e.target.files) {
         return;
       }
@@ -14,11 +20,21 @@ function ImageInput({ onChange, value }) {
         return;
       }
 
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        throw new Error("Please select a valid image file");
+      }
+
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        throw new Error("Image size should be less than 5MB");
+      }
+
       // Get auth token
       const token = await getToken();
 
-      // First, get the pre-signed URL
-      const response = await fetch("http://localhost:8000/api/products/images", {
+      // First, get the pre-signed URL  
+      const response = await fetch(`/api/products/images`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -54,8 +70,11 @@ function ImageInput({ onChange, value }) {
 
     } catch (error) {
       console.error("Upload error:", error);
+      setUploadError(error.message || "Failed to upload image");
       // Clear the file input on error
       e.target.value = "";
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -65,13 +84,29 @@ function ImageInput({ onChange, value }) {
         type="file" 
         onChange={handleFileChange} 
         accept="image/*"
+        disabled={uploading}
       />
-      {value && (
-        <img 
-          src={value} 
-          alt="Preview" 
-          className="mt-2 max-w-[200px] h-auto rounded-lg border"
-        />
+      
+      {uploading && (
+        <div className="text-sm text-blue-600">
+          Uploading image...
+        </div>
+      )}
+      
+      {uploadError && (
+        <div className="text-sm text-red-600">
+          {uploadError}
+        </div>
+      )}
+      
+      {value && !uploading && (
+        <div className="mt-2">
+          <img 
+            src={value} 
+            alt="Product preview" 
+            className="max-w-[200px] h-auto rounded-lg border"
+          />
+        </div>
       )}
     </div>
   );
