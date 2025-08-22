@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X, ShoppingBag } from "lucide-react";
+import { Menu, X, ShoppingBag, Package, ChevronDown, Settings, Plus, FileText } from "lucide-react";
 import { useSelector } from "react-redux";
 import { SignedIn, UserButton, SignedOut, useUser } from "@clerk/clerk-react";
 import ProductSearchForm from "./ProductSearchForm";
@@ -10,6 +10,7 @@ export default function Navigation() {
   const { user, isLoaded } = useUser();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAdminDropdownOpen, setIsAdminDropdownOpen] = useState(false);
 
   // Calculate total quantity of items in cart
   const cartItemCount = cartItems.reduce(
@@ -19,6 +20,9 @@ export default function Navigation() {
 
   // Function to close mobile menu
   const closeMobileMenu = () => setIsMenuOpen(false);
+  
+  // Function to close admin dropdown
+  const closeAdminDropdown = () => setIsAdminDropdownOpen(false);
 
   const navigationLinks = [
     {
@@ -47,6 +51,27 @@ export default function Navigation() {
     },
   ];
 
+  const isAdmin = isLoaded && user?.publicMetadata?.role === "admin";
+
+  const adminMenuItems = [
+    {
+      path: "/admin/products/create",
+      label: "Create Product",
+      icon: Plus,
+    },
+    {
+      path: "/admin/orders",
+      label: "Manage Orders",
+      icon: FileText,
+    },
+    // Uncomment if admins should also see My Orders
+    // {
+    //   path: "/my-orders",
+    //   label: "My Orders",
+    //   icon: Package,
+    // },
+  ];
+
   return (
     <header className="bg-white border-b border-gray-200 px-4 lg:px-16">
       <div>
@@ -56,7 +81,7 @@ export default function Navigation() {
             Mebius
           </Link>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation - Shopping Links */}
           <nav className="hidden md:flex space-x-8">
             {navigationLinks.map((item) => (
               <Link
@@ -69,18 +94,60 @@ export default function Navigation() {
             ))}
           </nav>
 
-          {/* Icons */}
+          {/* Right Side Icons & Actions */}
           <div className="flex items-center space-x-4">
-            {/* Show Create Product button only for Clerk admin */}
-            {isLoaded && user?.publicMetadata?.role === "admin" && (
-              <Link
-                to="/admin/products/create"
-                className="font-medium hover:text-gray-600 border px-2 py-1 rounded"
-              >
-                Create Product
-              </Link>
+            {/* Admin Dropdown */}
+            {isAdmin && (
+              <div className="relative">
+                <button
+                  onClick={() => setIsAdminDropdownOpen(!isAdminDropdownOpen)}
+                  className="flex items-center space-x-1 px-3 py-1 rounded-md hover:bg-gray-100 font-medium text-sm"
+                  aria-label="Admin Menu"
+                >
+                  <Settings size={16} />
+                  <span className="hidden sm:inline">Admin</span>
+                  <ChevronDown size={14} />
+                </button>
+                
+                {isAdminDropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-20">
+                    {adminMenuItems.map((item) => {
+                      const IconComponent = item.icon;
+                      return (
+                        <Link
+                          key={item.path}
+                          to={item.path}
+                          className="flex items-center space-x-2 px-4 py-2 text-sm hover:bg-gray-50 first:rounded-t-md last:rounded-b-md"
+                          onClick={closeAdminDropdown}
+                        >
+                          <IconComponent size={16} />
+                          <span>{item.label}</span>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
             )}
+            
+            {/* My Orders - Only for signed-in non-admin users or if admins can also order */}
+            <SignedIn>
+              {!isAdmin && (
+                <Link
+                  to="/my-orders"
+                  aria-label="My Orders"
+                  className="p-1 flex items-center space-x-1 hover:text-gray-600"
+                >
+                  <Package size={20} />
+                  <span className="hidden sm:inline text-sm">My Orders</span>
+                </Link>
+              )}
+            </SignedIn>
+
+            {/* Search */}
             <ProductSearchForm />
+            
+            {/* Shopping Cart */}
             <Link
               to="/cart"
               aria-label="Shopping Bag"
@@ -91,6 +158,8 @@ export default function Navigation() {
                 {cartItemCount}
               </span>
             </Link>
+
+            {/* User Authentication */}
             <SignedIn>
               <UserButton />
             </SignedIn>
@@ -117,8 +186,9 @@ export default function Navigation() {
 
       {/* Mobile Navigation */}
       {isMenuOpen && (
-        <div className="md:hidden fixed top-16 left-4 right-4 bg-white z-10">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t border-gray-200">
+        <div className="md:hidden fixed top-16 left-4 right-4 bg-white z-10 border border-gray-200 rounded-md shadow-lg">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            {/* Shopping Navigation */}
             {navigationLinks.map((item) => (
               <Link
                 key={item.path}
@@ -129,17 +199,77 @@ export default function Navigation() {
                 {item.label}
               </Link>
             ))}
-          </div>
-
-          <div className="block md:hidden px-4">
+            
+            {/* Divider */}
+            <div className="border-t border-gray-200 my-2"></div>
+            
+            {/* Mobile: My Orders for signed-in non-admin users */}
+            <SignedIn>
+              {!isAdmin && (
+                <Link
+                  to="/my-orders"
+                  className="flex items-center space-x-2 px-3 py-2 text-base font-medium hover:bg-gray-100 rounded-md"
+                  onClick={closeMobileMenu}
+                >
+                  <Package size={16} />
+                  <span>My Orders</span>
+                </Link>
+              )}
+            </SignedIn>
+            
+            {/* Mobile: Admin Menu */}
+            {isAdmin && (
+              <>
+                <div className="px-3 py-2 text-sm font-semibold text-gray-500 uppercase tracking-wide">
+                  Admin
+                </div>
+                {adminMenuItems.map((item) => {
+                  const IconComponent = item.icon;
+                  return (
+                    <Link
+                      key={item.path}
+                      to={item.path}
+                      className="flex items-center space-x-2 px-3 py-2 text-base font-medium hover:bg-gray-100 rounded-md text-blue-600"
+                      onClick={closeMobileMenu}
+                    >
+                      <IconComponent size={16} />
+                      <span>{item.label}</span>
+                    </Link>
+                  );
+                })}
+              </>
+            )}
+            
+            {/* Mobile: Sign In/Up */}
             <SignedOut>
-              <div className="flex items-center gap-4">
-                <Link to="/sign-in">Sign In</Link>
-                <Link to="/sign-up">Sign Up</Link>
+              <div className="border-t border-gray-200 my-2"></div>
+              <div className="px-3 py-2 space-y-2">
+                <Link 
+                  to="/sign-in" 
+                  className="block text-base font-medium hover:text-gray-600"
+                  onClick={closeMobileMenu}
+                >
+                  Sign In
+                </Link>
+                <Link 
+                  to="/sign-up" 
+                  className="block text-base font-medium hover:text-gray-600"
+                  onClick={closeMobileMenu}
+                >
+                  Sign Up
+                </Link>
               </div>
             </SignedOut>
           </div>
         </div>
+      )}
+
+      {/* Click outside to close admin dropdown */}
+      {isAdminDropdownOpen && (
+        <div 
+          className="fixed inset-0 z-10" 
+          onClick={closeAdminDropdown}
+        ></div>
       )}
     </header>
   );

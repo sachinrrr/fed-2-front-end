@@ -24,7 +24,7 @@
          });
        },
      }),
-     tagTypes: ['Product', 'Category', 'Color'],
+     tagTypes: ['Product', 'Category', 'Color', 'Order'],
      endpoints: (build) => ({
        getAllProducts: build.query({
          query: ({ categoryId, colorId, sortBy, sortOrder } = {}) => {
@@ -68,9 +68,21 @@
            body: order,
          }),
        }),
+       getUserOrders: build.query({
+         query: () => "/orders/user",
+         providesTags: ['Order'],
+       }),
+       getAllOrders: build.query({
+         query: () => "/orders/admin/all",
+         providesTags: ['Order'],
+       }),
+       getOrderById: build.query({
+         query: (id) => `/orders/${id}`,
+         providesTags: (result, error, id) => [{ type: 'Order', id }],
+       }),
      }),
    });
    
    // Export hooks for usage in functional components, which are
    // auto-generated based on the defined endpoints
-   export const { useGetAllProductsQuery, useGetProductsBySearchQuery, useGetProductByIdQuery, useCreateOrderMutation, useCreateProductMutation, useGetAllCategoriesQuery, useGetAllColorsQuery } = Api;
+   export const { useGetAllProductsQuery, useGetProductsBySearchQuery, useGetProductByIdQuery, useCreateOrderMutation, useCreateProductMutation, useGetAllCategoriesQuery, useGetAllColorsQuery, useGetUserOrdersQuery, useGetAllOrdersQuery, useGetOrderByIdQuery } = Api;
