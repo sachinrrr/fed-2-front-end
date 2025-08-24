@@ -118,7 +118,7 @@ function MyOrdersPage() {
                         <div className="flex items-center space-x-2 text-sm text-gray-600">
                           <Calendar className="w-4 h-4" />
                           <span>
-                            {new Date(order.createdAt).toLocaleDateString()}
+                            {new Date(parseInt(order._id.toString().substring(0, 8), 16) * 1000).toLocaleDateString()}
                           </span>
                         </div>
                       </div>
@@ -212,12 +212,10 @@ function MyOrdersPage() {
                             <MapPin className="w-4 h-4 mr-1" />
                             Shipping Address
                           </h4>
-                          <div className="text-sm text-gray-600">
-                            <p>{order.addressId.street}</p>
-                            <p>
-                              {order.addressId.city}, {order.addressId.state} {order.addressId.zipCode}
-                            </p>
-                            <p>{order.addressId.country}</p>
+                          <div className="text-sm text-gray-600 space-y-1">
+                            {order.addressId.line_1 && <p>{order.addressId.line_1}</p>}
+                            {order.addressId.line_2 && <p>{order.addressId.line_2}</p>}
+                            <p>{order.addressId.city}</p>
                           </div>
                         </div>
                       )}

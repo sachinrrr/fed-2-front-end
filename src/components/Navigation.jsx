@@ -69,12 +69,12 @@ export default function Navigation() {
       label: "Manage Orders",
       icon: FileText,
     },
-    // Uncomment if admins should also see My Orders
-    // {
-    //   path: "/my-orders",
-    //   label: "My Orders",
-    //   icon: Package,
-    // },
+    // Temporarily enabled for testing
+    {
+      path: "/my-orders",
+      label: "My Orders",
+      icon: Package,
+    },
   ];
 
   return (
@@ -135,18 +135,16 @@ export default function Navigation() {
               </div>
             )}
             
-            {/* My Orders - Only for signed-in non-admin users or if admins can also order */}
+            {/* My Orders - Temporarily enabled for admins for testing */}
             <SignedIn>
-              {!isAdmin && (
-                <Link
-                  to="/my-orders"
-                  aria-label="My Orders"
-                  className="p-1 flex items-center space-x-1 hover:text-gray-600"
-                >
-                  <Package size={20} />
-                  <span className="hidden sm:inline text-sm">My Orders</span>
-                </Link>
-              )}
+              <Link
+                to="/my-orders"
+                aria-label="My Orders"
+                className="p-1 flex items-center space-x-1 hover:text-gray-600"
+              >
+                <Package size={20} />
+                <span className="hidden sm:inline text-sm">My Orders</span>
+              </Link>
             </SignedIn>
 
             {/* Search */}
@@ -208,18 +206,16 @@ export default function Navigation() {
             {/* Divider */}
             <div className="border-t border-gray-200 my-2"></div>
             
-            {/* Mobile: My Orders for signed-in non-admin users */}
+            {/* Mobile: My Orders - Temporarily enabled for admins for testing */}
             <SignedIn>
-              {!isAdmin && (
-                <Link
-                  to="/my-orders"
-                  className="flex items-center space-x-2 px-3 py-2 text-base font-medium hover:bg-gray-100 rounded-md"
-                  onClick={closeMobileMenu}
-                >
-                  <Package size={16} />
-                  <span>My Orders</span>
-                </Link>
-              )}
+              <Link
+                to="/my-orders"
+                className="flex items-center space-x-2 px-3 py-2 text-base font-medium hover:bg-gray-100 rounded-md"
+                onClick={closeMobileMenu}
+              >
+                <Package size={16} />
+                <span>My Orders</span>
+              </Link>
             </SignedIn>
             
             {/* Mobile: Admin Menu */}
