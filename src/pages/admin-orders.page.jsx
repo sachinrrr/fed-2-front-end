@@ -410,15 +410,7 @@ function AdminOrdersPage() {
                             </Select>
                           </div>
                           
-                          {/* Payment Status - Read Only */}
-                          <div>
-                            <label className="text-xs text-gray-600 mb-1 block">Payment Status</label>
-                            <div className={`w-full h-8 px-3 py-1 text-xs rounded-md border flex items-center ${getPaymentStatusColor(order.paymentStatus)}`}>
-                              <CreditCard className="w-3 h-3 mr-1" />
-                              {order.paymentStatus}
-                            </div>
-                            <p className="text-xs text-gray-500 mt-1">Read-only: Contact payment provider to modify</p>
-                          </div>
+
 
                           <Button 
                             variant="outline" 
@@ -517,10 +509,20 @@ function AdminOrdersPage() {
                           {order.addressId ? (
                             <div>
                               <h6 className="font-medium text-gray-700 mb-2">Shipping Address</h6>
-                              <div className="text-gray-600 space-y-1">
-                                {order.addressId.line_1 && <div>{order.addressId.line_1}</div>}
-                                {order.addressId.line_2 && <div>{order.addressId.line_2}</div>}
-                                <div>{order.addressId.city}</div>
+                              <div className="space-y-1">
+                                {order.addressId.line_1 && (
+                                  <div>
+                                    <strong>Address:</strong> {order.addressId.line_1}
+                                  </div>
+                                )}
+                                {order.addressId.line_2 && (
+                                  <div>
+                                    <strong>Line 2:</strong> {order.addressId.line_2}
+                                  </div>
+                                )}
+                                <div>
+                                  <strong>City:</strong> {order.addressId.city}
+                                </div>
                               </div>
                             </div>
                           ) : (
@@ -533,24 +535,7 @@ function AdminOrdersPage() {
                       </div>
                     </div>
                     
-                    {/* Current Status */}
-                    <div className="mt-4 bg-white p-4 rounded-lg border">
-                      <h5 className="font-medium text-gray-800 mb-3">Current Status</h5>
-                      <div className="grid grid-cols-2 gap-4 text-sm">
-                        <div className="flex items-center space-x-2">
-                          <span className="font-medium">Order Status:</span>
-                          <span className={`px-2 py-1 rounded-full text-xs ${getStatusColor(order.orderStatus)}`}>
-                            {order.orderStatus}
-                          </span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <span className="font-medium">Payment Status:</span>
-                          <span className={`px-2 py-1 rounded-full text-xs ${getPaymentStatusColor(order.paymentStatus)}`}>
-                            {order.paymentStatus}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
+
                   </div>
                 )}
               </div>
