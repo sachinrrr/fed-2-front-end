@@ -68,14 +68,26 @@
            body: order,
          }),
        }),
-       getUserOrders: build.query({
-         query: () => "/orders/user",
-         providesTags: ['Order'],
-       }),
-       getAllOrders: build.query({
-         query: () => "/orders/admin/all",
-         providesTags: ['Order'],
-       }),
+             getUserOrders: build.query({
+        query: () => "/orders/user",
+        providesTags: ['Order'],
+      }),
+      getAllOrders: build.query({
+        query: () => "/orders/admin/all",
+        providesTags: ['Order'],
+      }),
+      getSalesData: build.query({
+        query: (days = 7) => `/orders/admin/sales?days=${days}`,
+        providesTags: ['Order'],
+      }),
+      updateOrderStatus: build.mutation({
+        query: ({ id, orderStatus, paymentStatus }) => ({
+          url: `/orders/admin/${id}`,
+          method: "PUT",
+          body: { orderStatus, paymentStatus },
+        }),
+        invalidatesTags: ['Order'],
+      }),
        getOrderById: build.query({
          query: (id) => `/orders/${id}`,
          providesTags: (result, error, id) => [{ type: 'Order', id }],
@@ -85,4 +97,4 @@
    
    // Export hooks for usage in functional components, which are
    // auto-generated based on the defined endpoints
-   export const { useGetAllProductsQuery, useGetProductsBySearchQuery, useGetProductByIdQuery, useCreateOrderMutation, useCreateProductMutation, useGetAllCategoriesQuery, useGetAllColorsQuery, useGetUserOrdersQuery, useGetAllOrdersQuery, useGetOrderByIdQuery } = Api;
+   export const { useGetAllProductsQuery, useGetProductsBySearchQuery, useGetProductByIdQuery, useCreateOrderMutation, useCreateProductMutation, useGetAllCategoriesQuery, useGetAllColorsQuery, useGetUserOrdersQuery, useGetAllOrdersQuery, useGetSalesDataQuery, useGetOrderByIdQuery, useUpdateOrderStatusMutation } = Api;

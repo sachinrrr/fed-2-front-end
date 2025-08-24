@@ -13,6 +13,7 @@ import ShopPage from "./pages/shop.page.jsx";
 import ProductPage from "./pages/product.page.jsx";
 import MyOrdersPage from "./pages/my-orders.page.jsx";
 import AdminOrdersPage from "./pages/admin-orders.page.jsx";
+import SalesDashboard from "./pages/sales-dashboard.page.jsx";
 import RootLayout from "./layouts/root.layout.jsx";
 import CartPage from "./pages/cart.page";
 import CheckoutPage from "./pages/checkout.page";
@@ -54,6 +55,10 @@ createRoot(document.getElementById("root")).render(
                   <Route
                     path="/admin/orders"
                     element={<AdminOrdersPage />}
+                  />
+                  <Route
+                    path="/admin/dashboard"
+                    element={<SalesDashboard />}
                   />
                 </Route>
               </Route>

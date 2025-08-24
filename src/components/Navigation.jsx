@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X, ShoppingBag, Package, ChevronDown, Settings, Plus, FileText } from "lucide-react";
+import { Menu, X, ShoppingBag, Package, ChevronDown, Settings, Plus, FileText, BarChart3 } from "lucide-react";
 import { useSelector } from "react-redux";
 import { SignedIn, UserButton, SignedOut, useUser } from "@clerk/clerk-react";
 import ProductSearchForm from "./ProductSearchForm";
@@ -54,6 +54,11 @@ export default function Navigation() {
   const isAdmin = isLoaded && user?.publicMetadata?.role === "admin";
 
   const adminMenuItems = [
+    {
+      path: "/admin/dashboard",
+      label: "Sales Dashboard",
+      icon: BarChart3,
+    },
     {
       path: "/admin/products/create",
       label: "Create Product",
