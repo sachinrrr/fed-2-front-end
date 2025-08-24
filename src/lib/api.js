@@ -37,10 +37,19 @@
          },
          providesTags: ['Product'],
        }),
-       getProductsBySearch: build.query({
-         query: (query) => `/products/search?search=${query}`,
-         providesTags: ['Product'],
-       }),
+             getProductsBySearch: build.query({
+        query: (query) => `/products/search?search=${query}`,
+        providesTags: ['Product'],
+      }),
+      getTrendingProducts: build.query({
+        query: ({ categoryId, limit = 8 } = {}) => {
+          const params = new URLSearchParams();
+          if (categoryId) params.append('categoryId', categoryId);
+          if (limit) params.append('limit', limit.toString());
+          return `/products/trending?${params.toString()}`;
+        },
+        providesTags: ['Product'],
+      }),
        getProductById: build.query({
          query: (id) => `/products/${id}`,
          providesTags: (result, error, id) => [{ type: 'Product', id }],
@@ -97,4 +106,4 @@
    
    // Export hooks for usage in functional components, which are
    // auto-generated based on the defined endpoints
-   export const { useGetAllProductsQuery, useGetProductsBySearchQuery, useGetProductByIdQuery, useCreateOrderMutation, useCreateProductMutation, useGetAllCategoriesQuery, useGetAllColorsQuery, useGetUserOrdersQuery, useGetAllOrdersQuery, useGetSalesDataQuery, useGetOrderByIdQuery, useUpdateOrderStatusMutation } = Api;
+   export const { useGetAllProductsQuery, useGetProductsBySearchQuery, useGetTrendingProductsQuery, useGetProductByIdQuery, useCreateOrderMutation, useCreateProductMutation, useGetAllCategoriesQuery, useGetAllColorsQuery, useGetUserOrdersQuery, useGetAllOrdersQuery, useGetSalesDataQuery, useGetOrderByIdQuery, useUpdateOrderStatusMutation } = Api;
