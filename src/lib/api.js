@@ -97,13 +97,17 @@
         }),
         invalidatesTags: ['Order'],
       }),
-       getOrderById: build.query({
-         query: (id) => `/orders/${id}`,
-         providesTags: (result, error, id) => [{ type: 'Order', id }],
-       }),
-     }),
-   });
+             getOrderById: build.query({
+        query: (id) => `/orders/${id}`,
+        providesTags: (result, error, id) => [{ type: 'Order', id }],
+      }),
+      getCheckoutSessionStatus: build.query({
+        query: (sessionId) => `/payments/checkout-session-status?session_id=${sessionId}`,
+        providesTags: ['Order'],
+      }),
+    }),
+  });
    
    // Export hooks for usage in functional components, which are
    // auto-generated based on the defined endpoints
-   export const { useGetAllProductsQuery, useGetProductsBySearchQuery, useGetTrendingProductsQuery, useGetProductByIdQuery, useCreateOrderMutation, useCreateProductMutation, useGetAllCategoriesQuery, useGetAllColorsQuery, useGetUserOrdersQuery, useGetAllOrdersQuery, useGetSalesDataQuery, useGetOrderByIdQuery, useUpdateOrderStatusMutation } = Api;
+   export const { useGetAllProductsQuery, useGetProductsBySearchQuery, useGetTrendingProductsQuery, useGetProductByIdQuery, useCreateOrderMutation, useCreateProductMutation, useGetAllCategoriesQuery, useGetAllColorsQuery, useGetUserOrdersQuery, useGetAllOrdersQuery, useGetSalesDataQuery, useGetOrderByIdQuery, useUpdateOrderStatusMutation, useGetCheckoutSessionStatusQuery } = Api;

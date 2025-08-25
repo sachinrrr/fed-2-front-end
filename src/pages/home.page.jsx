@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { clearCart } from "../lib/features/cartSlice";
+import { useGetCheckoutSessionStatusQuery } from "../lib/api";
 import CasualInspirations from "../components/CasualInspirations";
 import HeroGrid from "../components/HeroGrid";
 import TrendingSection from "../components/TrendingSection";
@@ -13,10 +14,23 @@ function HomePage() {
   const sessionId = searchParams.get("session_id");
   const orderId = searchParams.get("order_id");
 
+  // Check payment status with Stripe (only when we have a session ID)
+  const { data: sessionStatus, error: sessionError } = useGetCheckoutSessionStatusQuery(sessionId, {
+    skip: !sessionId || paymentSuccess !== "success"
+  });
+
   // Handle payment success
   useEffect(() => {
     if (paymentSuccess === "success" && sessionId) {
       console.log("Payment completed successfully!", { sessionId, orderId });
+      
+      // Log session status response for debugging
+      if (sessionStatus) {
+        console.log("Session status response:", sessionStatus);
+      }
+      if (sessionError) {
+        console.error("Session status error:", sessionError);
+      }
       
       // Clear cart
       dispatch(clearCart());
@@ -26,7 +40,7 @@ function HomePage() {
         setSearchParams({});
       }, 5000);
     }
-  }, [paymentSuccess, sessionId, orderId, dispatch, setSearchParams]);
+  }, [paymentSuccess, sessionId, orderId, sessionStatus, sessionError, dispatch, setSearchParams]);
 
   return (
     <>
