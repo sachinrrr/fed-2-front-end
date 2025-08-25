@@ -6,8 +6,8 @@
    export const Api = createApi({
      reducerPath: "Api",
      baseQuery: fetchBaseQuery({
-       // Use proxy configuration from vite.config.js
-       baseUrl: `/api`,
+             // Use environment variable for base URL
+      baseUrl: `${import.meta.env.VITE_BASE_URL}/api`,
        prepareHeaders: async (headers) => {
          return new Promise((resolve) => {
            async function checkToken() {
