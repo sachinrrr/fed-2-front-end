@@ -184,17 +184,9 @@ function ShopPage() {
           <div className="w-full sm:w-48">
             <label className="block text-sm font-medium text-gray-700 mb-1.5">Sort by Price</label>
             <Select 
-              value={filters.sortBy === 'price' ? filters.sortOrder : 'default'} 
+              value={filters.sortBy === 'price' ? filters.sortOrder : ''} 
               onValueChange={(value) => {
-                if (value === 'default') {
-                  const newFilters = { ...filters, sortBy: 'name', sortOrder: 'asc' };
-                  setFilters(newFilters);
-                  
-                  const params = new URLSearchParams(searchParams);
-                  params.delete('sortBy');
-                  params.delete('sortOrder');
-                  setSearchParams(params);
-                } else {
+                if (value) {
                   const newFilters = { ...filters, sortBy: 'price', sortOrder: value };
                   setFilters(newFilters);
                   
@@ -205,25 +197,40 @@ function ShopPage() {
                 }
               }}
             >
-              <SelectTrigger className="w-full h-8 text-sm">
-                <SelectValue />
+              <SelectTrigger className="w-full h-9 text-sm border-gray-200 hover:border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+                <SelectValue placeholder="Select price order" />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="default">Default (Name)</SelectItem>
-                <SelectItem value="asc">
-                  <div className="flex items-center gap-2">
-                    <SortAsc className="h-4 w-4" />
+              <SelectContent className="min-w-[200px]">
+                <SelectItem value="asc" className="cursor-pointer hover:bg-gray-50">
+                  <div className="flex items-center gap-2 py-1">
+                    <SortAsc className="h-4 w-4 text-green-600" />
                     <span>Price: Low to High</span>
                   </div>
                 </SelectItem>
-                <SelectItem value="desc">
-                  <div className="flex items-center gap-2">
-                    <SortDesc className="h-4 w-4" />
+                <SelectItem value="desc" className="cursor-pointer hover:bg-gray-50">
+                  <div className="flex items-center gap-2 py-1">
+                    <SortDesc className="h-4 w-4 text-red-600" />
                     <span>Price: High to Low</span>
                   </div>
                 </SelectItem>
               </SelectContent>
             </Select>
+            {filters.sortBy === 'price' && (
+              <button
+                onClick={() => {
+                  const newFilters = { ...filters, sortBy: 'name', sortOrder: 'asc' };
+                  setFilters(newFilters);
+                  
+                  const params = new URLSearchParams(searchParams);
+                  params.delete('sortBy');
+                  params.delete('sortOrder');
+                  setSearchParams(params);
+                }}
+                className="mt-1 text-xs text-gray-500 hover:text-gray-700 underline"
+              >
+                Clear price sorting
+              </button>
+            )}
           </div>
         </div>
       </div>
