@@ -34,7 +34,7 @@ function ImageInput({ onChange, value }) {
       const token = await getToken();
 
       // First, get the pre-signed URL  
-      const response = await fetch(`/api/products/images`, {
+      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/products/images`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
