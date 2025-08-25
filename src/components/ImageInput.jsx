@@ -33,6 +33,10 @@ function ImageInput({ onChange, value }) {
       // Get auth token
       const token = await getToken();
 
+      // Debug: Log the environment variable
+      console.log("VITE_BASE_URL:", import.meta.env.VITE_BASE_URL);
+      console.log("Full URL:", `${import.meta.env.VITE_BASE_URL}/api/products/images`);
+
       // First, get the pre-signed URL  
       const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/products/images`, {
         method: "POST",
