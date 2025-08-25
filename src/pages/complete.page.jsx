@@ -1,4 +1,4 @@
-import { Link, useSearchParams } from "react-router";
+import { Link, useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { clearCart } from "../lib/features/cartSlice";
@@ -8,6 +8,8 @@ function CompletePage() {
   const sessionId = searchParams.get("session_id");
   const orderId = searchParams.get("order_id");
   const dispatch = useDispatch();
+
+  console.log("CompletePage loaded with params:", { sessionId, orderId });
 
   // Clear cart when payment is complete
   useEffect(() => {
