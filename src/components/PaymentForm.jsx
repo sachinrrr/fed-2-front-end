@@ -46,6 +46,12 @@ const PaymentForm = ({ orderId }) => {
 
       const data = await response.json();
       console.log("Checkout session created:", data);
+      console.log("Client secret from response:", data.clientSecret);
+      console.log("Client secret type:", typeof data.clientSecret);
+      
+      if (!data.clientSecret) {
+        throw new Error("No client secret received from server");
+      }
       
       return data.clientSecret;
     } catch (error) {
