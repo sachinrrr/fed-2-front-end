@@ -368,19 +368,15 @@ function AdminOrdersPage() {
                         </div>
                       </div>
 
-                      {/* Shipping Address */}
+                      {/* Ship To */}
                       {order.addressId && (
                         <div className="bg-gray-50 p-4 rounded-lg">
                           <h4 className="text-sm font-medium text-gray-900 mb-2 flex items-center">
                             <MapPin className="w-4 h-4 mr-1" />
-                            Shipping Address
+                            Ship to
                           </h4>
                           <div className="text-sm text-gray-600">
-                            <p>{order.addressId.street}</p>
-                            <p>
-                              {order.addressId.city}, {order.addressId.state} {order.addressId.zipCode}
-                            </p>
-                            <p>{order.addressId.country}</p>
+                            {order.addressId.city}
                           </div>
                         </div>
                       )}
