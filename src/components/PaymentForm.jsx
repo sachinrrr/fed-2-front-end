@@ -46,14 +46,16 @@ const PaymentForm = ({ orderId }) => {
 
       const data = await response.json();
       console.log("Checkout session created:", data);
+      console.log("Client secret from response:", data.clientSecret);
+      console.log("Session ID from response:", data.sessionId);
       
-      // For Embedded Checkout, we use the session ID as the client secret
-      if (!data.sessionId) {
-        throw new Error("No session ID received from server");
+      // For Embedded Checkout with ui_mode: 'embedded', we should get a client_secret
+      if (!data.clientSecret) {
+        throw new Error("No client secret received from server");
       }
       
-      console.log("Using session ID as client secret:", data.sessionId);
-      return data.sessionId;
+      console.log("Using client secret:", data.clientSecret);
+      return data.clientSecret;
     } catch (error) {
       console.error("Error creating checkout session:", error);
       throw error;
