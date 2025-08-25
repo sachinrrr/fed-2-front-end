@@ -4,6 +4,7 @@ import {
 } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { useCallback } from "react";
+import { useAuth } from "@clerk/clerk-react";
 
 const STRIPE_PUBLISHABLE_KEY = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
 const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
@@ -11,12 +12,19 @@ const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const PaymentForm = ({ orderId }) => {
+  const { getToken } = useAuth();
+  
   const fetchClientSecret = useCallback(async () => {
     try {
       console.log("Creating checkout session for order:", orderId);
       
       // Get auth token
-      const token = await window.Clerk.session?.getToken();
+      const token = await getToken();
+      console.log("Auth token retrieved:", token ? "✅ Token exists" : "❌ No token");
+      
+      if (!token) {
+        throw new Error("Authentication required. Please sign in again.");
+      }
       
       // Create a Checkout Session
       const response = await fetch(`${BASE_URL}/api/payments/create-checkout-session`, {
@@ -28,8 +36,12 @@ const PaymentForm = ({ orderId }) => {
         body: JSON.stringify({ orderId }),
       });
 
+      console.log("Response status:", response.status);
+      
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorText = await response.text();
+        console.error("Server error response:", errorText);
+        throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
       }
 
       const data = await response.json();
@@ -40,7 +52,7 @@ const PaymentForm = ({ orderId }) => {
       console.error("Error creating checkout session:", error);
       throw error;
     }
-  }, [orderId]);
+  }, [orderId, getToken]);
 
   const options = { fetchClientSecret };
 
