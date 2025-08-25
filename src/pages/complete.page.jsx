@@ -1,62 +1,61 @@
-import { Button } from "@/components/ui/button";
-import { useGetOrderQuery, useGetCheckoutSessionStatusQuery } from "@/lib/api";
-import { Link, useSearchParams, Navigate } from "react-router";
-import { useState, useEffect } from "react";
-
-const BASE_URL = import.meta.env.VITE_BASE_URL;
+import { Link, useSearchParams } from "react-router";
+import { useEffect, useDispatch } from "react-redux";
+import { clearCart } from "../lib/features/cartSlice";
 
 function CompletePage() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const sessionId = searchParams.get("session_id");
+  const orderId = searchParams.get("order_id");
+  const dispatch = useDispatch();
 
-  const { data, isLoading, isError } =
-    useGetCheckoutSessionStatusQuery(sessionId);
+  // Clear cart when payment is complete
+  useEffect(() => {
+    if (sessionId) {
+      dispatch(clearCart());
+    }
+  }, [sessionId, dispatch]);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (isError) {
-    return <div>Error</div>;
-  }
-
-  if (data?.status === "open") {
-    return <Navigate to="/checkout" />;
-  }
-
-  if (data?.status === "complete") {
-    return (
-      <section id="success" className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold mb-4 text-green-600">Order Completed Successfully!</h2>
-        <p className="mb-4">
-          We appreciate your business! A confirmation email will be sent to{" "}
-          <span className="font-semibold">{data.customer_email}</span>.
-        </p>
-        
-        <div className="mt-6 border-t pt-4">
-          <h3 className="text-lg font-semibold mb-2">Order Details:</h3>
-          <p className="mb-2">Order ID: <span className="font-medium">{data.orderId}</span></p>
-          <p className="mb-2">Order Status: <span className="font-medium">{data.orderStatus}</span></p>
-          <p className="mb-2">Payment Status: <span className="font-medium">{data.paymentStatus}</span></p>
-        </div>
-        
-        <div className="mt-6">
-          <p>
-            If you have any questions, please email{" "}
-            <a href="mailto:orders@example.com" className="text-blue-600 hover:underline">
-              orders@example.com
-            </a>.
+  return (
+    <main className="px-4 lg:px-16 min-h-screen py-8">
+      <div className="max-w-2xl mx-auto text-center">
+        <div className="bg-white p-8 rounded-lg shadow-md">
+          <div className="text-green-600 text-6xl mb-4">✓</div>
+          <h1 className="text-3xl font-bold text-green-600 mb-4">Payment Successful!</h1>
+          <p className="text-lg text-gray-600 mb-6">
+            Thank you for your purchase. Your order has been confirmed.
           </p>
+          
+          {orderId && (
+            <div className="bg-gray-50 p-4 rounded-lg mb-6">
+              <p className="text-sm text-gray-500">Order ID</p>
+              <p className="font-mono text-lg">{orderId}</p>
+            </div>
+          )}
+          
+          <div className="space-y-4">
+            <p className="text-gray-600">
+              You will receive a confirmation email shortly with your order details.
+            </p>
+            
+            <div className="flex gap-4 justify-center">
+              <Link
+                to="/my-orders"
+                className="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition-colors"
+              >
+                View My Orders
+              </Link>
+              <Link
+                to="/"
+                className="bg-gray-200 text-gray-800 px-6 py-3 rounded-md hover:bg-gray-300 transition-colors"
+              >
+                Continue Shopping
+              </Link>
+            </div>
+          </div>
         </div>
-        
-        <Button asChild className="mt-6">
-          <Link to="/">Return to Home</Link>
-        </Button>
-      </section>
-    );
-  }
-
-  return null;
+      </div>
+    </main>
+  );
 }
 
 export default CompletePage;

@@ -11,18 +11,36 @@ const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const PaymentForm = ({ orderId }) => {
-  const fetchClientSecret = useCallback(() => {
-    // Create a Checkout Session
-    return fetch(`${BASE_URL}/api/payments/create-checkout-session`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ orderId }),
-    })
-      .then((res) => res.json())
-      .then((data) => data.clientSecret);
-  }, []);
+  const fetchClientSecret = useCallback(async () => {
+    try {
+      console.log("Creating checkout session for order:", orderId);
+      
+      // Get auth token
+      const token = await window.Clerk.session?.getToken();
+      
+      // Create a Checkout Session
+      const response = await fetch(`${BASE_URL}/api/payments/create-checkout-session`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({ orderId }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("Checkout session created:", data);
+      
+      return data.clientSecret;
+    } catch (error) {
+      console.error("Error creating checkout session:", error);
+      throw error;
+    }
+  }, [orderId]);
 
   const options = { fetchClientSecret };
 

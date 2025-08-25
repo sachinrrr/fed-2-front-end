@@ -17,6 +17,8 @@ import SalesDashboard from "./pages/sales-dashboard.page.jsx";
 import RootLayout from "./layouts/root.layout.jsx";
 import CartPage from "./pages/cart.page";
 import CheckoutPage from "./pages/checkout.page";
+import PaymentPage from "./pages/payment.page";
+import CompletePage from "./pages/complete.page";
 import ProtectedLayout from "./layouts/protected.layout";
 import CreateProductPage from "./pages/create-product-page";
 import AdminProtectedLayout from "./layouts/admin-protected.layout";
@@ -41,6 +43,8 @@ createRoot(document.getElementById("root")).render(
               <Route path="/cart" element={<CartPage />} />
               <Route element={<ProtectedLayout />}>
                 <Route path="/checkout" element={<CheckoutPage />} />
+                <Route path="/payment" element={<PaymentPage />} />
+                <Route path="/complete" element={<CompletePage />} />
                 <Route path="/my-orders" element={<MyOrdersPage />} />
               </Route>
               <Route path="/shop" element={<ShopPage />} />

@@ -1,17 +1,65 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useState } from "react";
+import { useCreateOrderMutation } from "../lib/api";
 
 function CheckoutPage() {
   const cart = useSelector((state) => state.cart.cartItems);
+  const navigate = useNavigate();
+  const [createOrder, { isLoading: isCreatingOrder }] = useCreateOrderMutation();
+  
   const [addressLine1, setAddressLine1] = useState("");
   const [addressLine2, setAddressLine2] = useState("");
   const [city, setCity] = useState("");
   const [phone, setPhone] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [error, setError] = useState("");
 
   if (cart.length === 0) {
     return <Navigate to="/" />;
   }
+
+  const handleProceedToPayment = async () => {
+    try {
+      setError("");
+      setIsProcessing(true);
+
+      // Validate required fields
+      if (!addressLine1.trim() || !city.trim() || !phone.trim()) {
+        setError("Please fill in all required fields");
+        return;
+      }
+
+      // Prepare order data
+      const orderData = {
+        orderItems: cart.map(item => ({
+          productId: item.product._id,
+          quantity: item.quantity
+        })),
+        shippingAddress: {
+          line_1: addressLine1.trim(),
+          line_2: addressLine2.trim() || null,
+          city: city.trim(),
+          phone: phone.trim()
+        }
+      };
+
+      console.log("Creating order with data:", orderData);
+
+      // Create the order
+      const response = await createOrder(orderData).unwrap();
+      console.log("Order created:", response);
+
+      // Navigate to payment page with order ID
+      navigate(`/payment?orderId=${response._id}`);
+
+    } catch (err) {
+      console.error("Error creating order:", err);
+      setError(err?.data?.message || err?.message || "Failed to create order. Please try again.");
+    } finally {
+      setIsProcessing(false);
+    }
+  };
 
   return (
     <main className="px-4 lg:px-16 min-h-screen py-8">
@@ -126,11 +174,19 @@ function CheckoutPage() {
       <div className="mb-8">
         <h3 className="text-2xl font-semibold mb-4">Payment</h3>
         <div className="bg-gray-50 p-6 rounded-lg">
+          {error && (
+            <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-md">
+              {error}
+            </div>
+          )}
+          
           <button
             type="button"
-            className="bg-black text-white px-6 py-3 rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 w-full font-medium"
+            onClick={handleProceedToPayment}
+            disabled={isProcessing || isCreatingOrder}
+            className="bg-black text-white px-6 py-3 rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 w-full font-medium disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Proceed to Payment
+            {isProcessing || isCreatingOrder ? "Processing..." : "Proceed to Payment"}
           </button>
         </div>
       </div>
