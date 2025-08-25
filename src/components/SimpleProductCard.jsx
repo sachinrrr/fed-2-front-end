@@ -52,7 +52,7 @@ function SimpleProductCard(props) {
         </Button>
         <Link to={`/shop/products/${props.product._id}`}>
           <Button variant="outline" className="w-full">
-            View Details
+            View Product
           </Button>
         </Link>
       </div>
