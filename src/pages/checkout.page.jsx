@@ -199,15 +199,10 @@ function CheckoutPage() {
           
           <button
             type="button"
-            onClick={() => {
-              console.log("Button clicked!");
-              alert("Button clicked! Check console for details.");
-              handleProceedToPayment();
-            }}
-            disabled={isProcessing || isCreatingOrder}
+            onClick={() => alert("BUTTON WORKS!")}
             className="bg-black text-white px-6 py-3 rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 w-full font-medium disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isProcessing || isCreatingOrder ? "Processing..." : "Proceed to Payment"}
+            TEST BUTTON
           </button>
         </div>
       </div>
