@@ -1,5 +1,6 @@
 import { Link, useSearchParams } from "react-router";
-import { useEffect, useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { clearCart } from "../lib/features/cartSlice";
 
 function CompletePage() {
