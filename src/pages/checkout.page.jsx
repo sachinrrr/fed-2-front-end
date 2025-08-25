@@ -20,15 +20,28 @@ function CheckoutPage() {
   }
 
   const handleProceedToPayment = async () => {
+    console.log("=== PROCEED TO PAYMENT CLICKED ===");
+    console.log("Function called successfully");
+    
     try {
       setError("");
       setIsProcessing(true);
+      console.log("Processing state set to true");
 
       // Validate required fields
+      console.log("Validating fields:", {
+        addressLine1: addressLine1.trim(),
+        city: city.trim(),
+        phone: phone.trim()
+      });
+      
       if (!addressLine1.trim() || !city.trim() || !phone.trim()) {
+        console.log("Validation failed - missing required fields");
         setError("Please fill in all required fields");
         return;
       }
+      
+      console.log("Validation passed");
 
       // Prepare order data
       const orderData = {
@@ -47,16 +60,20 @@ function CheckoutPage() {
       console.log("Creating order with data:", orderData);
 
       // Create the order
+      console.log("About to call createOrder mutation...");
       const response = await createOrder(orderData).unwrap();
-      console.log("Order created:", response);
+      console.log("Order created successfully:", response);
 
       // Navigate to payment page with order ID
+      console.log("Navigating to payment page...");
       navigate(`/payment?orderId=${response._id}`);
 
     } catch (err) {
       console.error("Error creating order:", err);
+      console.error("Error details:", err);
       setError(err?.data?.message || err?.message || "Failed to create order. Please try again.");
     } finally {
+      console.log("Setting processing to false");
       setIsProcessing(false);
     }
   };
@@ -182,7 +199,11 @@ function CheckoutPage() {
           
           <button
             type="button"
-            onClick={handleProceedToPayment}
+            onClick={() => {
+              console.log("Button clicked!");
+              alert("Button clicked! Check console for details.");
+              handleProceedToPayment();
+            }}
             disabled={isProcessing || isCreatingOrder}
             className="bg-black text-white px-6 py-3 rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 w-full font-medium disabled:opacity-50 disabled:cursor-not-allowed"
           >
