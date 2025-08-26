@@ -20,30 +20,15 @@ function CheckoutPage() {
   }
 
   const handleProceedToPayment = async () => {
-    console.log("=== PROCEED TO PAYMENT CLICKED ===");
-    console.log("Function called successfully");
-    
     try {
       setError("");
       setIsProcessing(true);
-      console.log("Processing state set to true");
-
-      // Validate required fields
-      console.log("Validating fields:", {
-        addressLine1: addressLine1.trim(),
-        city: city.trim(),
-        phone: phone.trim()
-      });
       
       if (!addressLine1.trim() || !city.trim() || !phone.trim()) {
-        console.log("Validation failed - missing required fields");
         setError("Please fill in all required fields");
         return;
       }
-      
-      console.log("Validation passed");
 
-      // Prepare order data
       const orderData = {
         orderItems: cart.map(item => ({
           productId: item.product._id,
@@ -57,23 +42,12 @@ function CheckoutPage() {
         }
       };
 
-      console.log("Creating order with data:", orderData);
-
-      // Create the order
-      console.log("About to call createOrder mutation...");
       const response = await createOrder(orderData).unwrap();
-      console.log("Order created successfully:", response);
-
-      // Navigate to payment page with order ID
-      console.log("Navigating to payment page...");
       navigate(`/payment?orderId=${response._id}`);
 
     } catch (err) {
-      console.error("Error creating order:", err);
-      console.error("Error details:", err);
       setError(err?.data?.message || err?.message || "Failed to create order. Please try again.");
     } finally {
-      console.log("Setting processing to false");
       setIsProcessing(false);
     }
   };

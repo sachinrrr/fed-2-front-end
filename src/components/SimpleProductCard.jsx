@@ -8,7 +8,7 @@ function SimpleProductCard(props) {
   const dispatch = useDispatch();
 
   const handleAddToCart = (e) => {
-    e.preventDefault(); // Prevent navigation when clicking add to cart
+    e.preventDefault(); 
     e.stopPropagation();
     dispatch(
       addToCart({

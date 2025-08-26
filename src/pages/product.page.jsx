@@ -19,7 +19,7 @@ function ProductPage() {
   } = useGetProductByIdQuery(productId);
 
   const handleAddToCart = () => {
-    if (product) {
+    if (product && product.stock > 0) {
       dispatch(
         addToCart({
           _id: product._id,

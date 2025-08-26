@@ -69,9 +69,7 @@ function ImageInput({ onChange, value }) {
       onChange(publicURL);
 
     } catch (error) {
-      console.error("Upload error:", error);
       setUploadError(error.message || "Failed to upload image");
-      // Clear the file input on error
       e.target.value = "";
     } finally {
       setUploading(false);
