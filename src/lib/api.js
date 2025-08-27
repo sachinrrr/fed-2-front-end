@@ -62,14 +62,32 @@
          query: () => `/colors`,
          providesTags: ['Color'],
        }),
-       createProduct: build.mutation({
-         query: (product) => ({
-           url: "/products",
-           method: "POST",
-           body: product,
-         }),
-         invalidatesTags: ['Product'],
-       }),
+             createProduct: build.mutation({
+        query: (product) => ({
+          url: "/products",
+          method: "POST",
+          body: product,
+        }),
+        invalidatesTags: ['Product'],
+      }),
+      updateProduct: build.mutation({
+        query: ({ id, ...product }) => ({
+          url: `/products/${id}`,
+          method: "PUT",
+          body: product,
+        }),
+        invalidatesTags: (result, error, { id }) => [
+          'Product',
+          { type: 'Product', id }
+        ],
+      }),
+      deleteProduct: build.mutation({
+        query: (id) => ({
+          url: `/products/${id}`,
+          method: "DELETE",
+        }),
+        invalidatesTags: ['Product'],
+      }),
        createOrder: build.mutation({
          query: (order) => ({
            url: "/orders",
@@ -109,4 +127,4 @@
   });
    
    
-   export const { useGetAllProductsQuery, useGetProductsBySearchQuery, useGetTrendingProductsQuery, useGetProductByIdQuery, useCreateOrderMutation, useCreateProductMutation, useGetAllCategoriesQuery, useGetAllColorsQuery, useGetUserOrdersQuery, useGetAllOrdersQuery, useGetSalesDataQuery, useGetOrderByIdQuery, useUpdateOrderStatusMutation, useGetCheckoutSessionStatusQuery } = Api;
+   export const { useGetAllProductsQuery, useGetProductsBySearchQuery, useGetTrendingProductsQuery, useGetProductByIdQuery, useCreateOrderMutation, useCreateProductMutation, useUpdateProductMutation, useDeleteProductMutation, useGetAllCategoriesQuery, useGetAllColorsQuery, useGetUserOrdersQuery, useGetAllOrdersQuery, useGetSalesDataQuery, useGetOrderByIdQuery, useUpdateOrderStatusMutation, useGetCheckoutSessionStatusQuery } = Api;

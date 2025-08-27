@@ -4,13 +4,21 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "../lib/features/cartSlice";
 import { Button } from "../components/ui/button";
 import { useState } from "react";
-import { Star, ShoppingCart, Package } from "lucide-react";
+import { Star, ShoppingCart, Package, Edit, Trash2, Settings } from "lucide-react";
+import { useUser } from "@clerk/clerk-react";
+import ProductEditModal from "../components/ProductEditModal";
+import ProductDeleteModal from "../components/ProductDeleteModal";
 
 function ProductPage() {
   const { productId } = useParams();
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(1);
   const [addedToCart, setAddedToCart] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  
+  const { user, isLoaded } = useUser();
+  const isAdmin = isLoaded && user?.publicMetadata?.role === "admin";
 
   const {
     data: product,
@@ -103,7 +111,48 @@ function ProductPage() {
             </nav>
 
             {/* Product Title */}
-            <h1 className="text-3xl font-bold text-gray-900">{product.name}</h1>
+            <div className="flex items-start justify-between">
+              <h1 className="text-3xl font-bold text-gray-900">{product.name}</h1>
+              
+              {/* Admin Controls */}
+              {isAdmin && (
+                <div className="flex items-center space-x-2 ml-4 flex-shrink-0">
+                  <Button
+                    onClick={() => setShowEditModal(true)}
+                    size="sm"
+                    variant="outline"
+                    className="flex items-center space-x-1 border-blue-200 text-blue-600 hover:bg-blue-50"
+                    title="Edit Product"
+                  >
+                    <Edit size={16} />
+                    <span className="hidden sm:inline">Edit</span>
+                  </Button>
+                  <Button
+                    onClick={() => setShowDeleteModal(true)}
+                    size="sm"
+                    variant="outline"
+                    className="flex items-center space-x-1 border-red-200 text-red-600 hover:bg-red-50"
+                    title="Delete Product"
+                  >
+                    <Trash2 size={16} />
+                    <span className="hidden sm:inline">Delete</span>
+                  </Button>
+                </div>
+              )}
+            </div>
+
+            {/* Admin Banner for Mobile */}
+            {isAdmin && (
+              <div className="sm:hidden bg-gray-50 p-3 rounded-lg border-l-4 border-blue-500">
+                <div className="flex items-center space-x-2">
+                  <Settings size={16} className="text-blue-600" />
+                  <span className="text-sm font-medium text-gray-700">Admin Mode Active</span>
+                </div>
+                <p className="text-xs text-gray-600 mt-1">
+                  Use the edit and delete buttons above to manage this product.
+                </p>
+              </div>
+            )}
 
             {/* Price */}
             <div className="text-3xl font-bold text-green-600">
@@ -191,13 +240,29 @@ function ProductPage() {
                 {product.description}
               </p>
             </div>
-
-
-
-
           </div>
         </div>
       </div>
+
+      {/* Admin Modals */}
+      {isAdmin && (
+        <>
+          <ProductEditModal
+            product={product}
+            isOpen={showEditModal}
+            onClose={() => setShowEditModal(false)}
+            onSuccess={() => {
+              // The RTK Query will automatically refetch the product data
+              // due to cache invalidation in the updateProduct mutation
+            }}
+          />
+          <ProductDeleteModal
+            product={product}
+            isOpen={showDeleteModal}
+            onClose={() => setShowDeleteModal(false)}
+          />
+        </>
+      )}
     </div>
   );
 }
