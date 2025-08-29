@@ -19,6 +19,27 @@ export const cartSlice = createSlice({
       }
       foundItem.quantity += 1;
     },
+    removeFromCart: (state, action) => {
+      const productId = action.payload;
+      state.cartItems = state.cartItems.filter(
+        (item) => item.product._id !== productId
+      );
+    },
+    updateQuantity: (state, action) => {
+      const { productId, quantity } = action.payload;
+      const foundItem = state.cartItems.find(
+        (item) => item.product._id === productId
+      );
+      if (foundItem) {
+        if (quantity <= 0) {
+          state.cartItems = state.cartItems.filter(
+            (item) => item.product._id !== productId
+          );
+        } else {
+          foundItem.quantity = quantity;
+        }
+      }
+    },
     clearCart: (state) => {
       state.cartItems = [];
     },
@@ -26,6 +47,6 @@ export const cartSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { addToCart, clearCart } = cartSlice.actions;
+export const { addToCart, removeFromCart, updateQuantity, clearCart } = cartSlice.actions;
 
 export default cartSlice.reducer;
