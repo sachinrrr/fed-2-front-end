@@ -8,6 +8,9 @@ import { Star, ShoppingCart, Package, Edit, Trash2, Settings } from "lucide-reac
 import { useUser } from "@clerk/clerk-react";
 import ProductEditModal from "../components/ProductEditModal";
 import ProductDeleteModal from "../components/ProductDeleteModal";
+import ReviewList from "../components/ReviewList";
+import AddReviewForm from "../components/AddReviewForm";
+import ReviewSummary from "../components/ReviewSummary";
 
 function ProductPage() {
   const { productId } = useParams();
@@ -239,6 +242,30 @@ function ProductPage() {
               <p className="text-gray-600 leading-relaxed">
                 {product.description}
               </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Reviews Section */}
+        <div className="mt-16 max-w-6xl mx-auto space-y-8">
+          {/* Review Summary */}
+          <ReviewSummary reviews={product.reviews} />
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Add Review Form */}
+            <div>
+              <AddReviewForm 
+                productId={productId}
+                onReviewAdded={() => {
+                  // The RTK Query will automatically refetch the product data
+                  // due to cache invalidation in the createReview mutation
+                }}
+              />
+            </div>
+            
+            {/* Reviews List */}
+            <div>
+              <ReviewList reviews={product.reviews} />
             </div>
           </div>
         </div>

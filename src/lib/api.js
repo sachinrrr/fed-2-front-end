@@ -123,8 +123,19 @@
         query: (sessionId) => `/payments/checkout-session-status?session_id=${sessionId}`,
         providesTags: ['Order'],
       }),
+      createReview: build.mutation({
+        query: ({ productId, review, rating }) => ({
+          url: "/reviews",
+          method: "POST",
+          body: { productId, review, rating },
+        }),
+        invalidatesTags: (result, error, { productId }) => [
+          'Product',
+          { type: 'Product', id: productId }
+        ],
+      }),
     }),
   });
    
    
-   export const { useGetAllProductsQuery, useGetProductsBySearchQuery, useGetTrendingProductsQuery, useGetProductByIdQuery, useCreateOrderMutation, useCreateProductMutation, useUpdateProductMutation, useDeleteProductMutation, useGetAllCategoriesQuery, useGetAllColorsQuery, useGetUserOrdersQuery, useGetAllOrdersQuery, useGetSalesDataQuery, useGetOrderByIdQuery, useUpdateOrderStatusMutation, useGetCheckoutSessionStatusQuery } = Api;
+   export const { useGetAllProductsQuery, useGetProductsBySearchQuery, useGetTrendingProductsQuery, useGetProductByIdQuery, useCreateOrderMutation, useCreateProductMutation, useUpdateProductMutation, useDeleteProductMutation, useGetAllCategoriesQuery, useGetAllColorsQuery, useGetUserOrdersQuery, useGetAllOrdersQuery, useGetSalesDataQuery, useGetOrderByIdQuery, useUpdateOrderStatusMutation, useGetCheckoutSessionStatusQuery, useCreateReviewMutation } = Api;
