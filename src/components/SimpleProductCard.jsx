@@ -65,16 +65,10 @@ function SimpleProductCard(props) {
           <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors line-clamp-2">
             {props.product.name}
           </h3>
-          <div className="flex items-center justify-between mb-4">
+          <div className="mb-4">
             <span className="text-2xl font-bold text-green-600">
               ${props.product.price}
             </span>
-            <div className="flex items-center gap-1">
-              <div className="flex text-yellow-400">
-                {'★'.repeat(5)}
-              </div>
-              <span className="text-sm text-gray-500 ml-1">(4.8)</span>
-            </div>
           </div>
         </div>
       </Link>
