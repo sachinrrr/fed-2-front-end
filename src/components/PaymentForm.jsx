@@ -49,7 +49,6 @@ const PaymentForm = ({ orderId }) => {
       console.log("Client secret from response:", data.clientSecret);
       console.log("Session ID from response:", data.sessionId);
       
-      // For Embedded Checkout with ui_mode: 'embedded', we should get a client_secret
       if (!data.clientSecret) {
         throw new Error("No client secret received from server");
       }

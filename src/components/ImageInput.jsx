@@ -25,7 +25,7 @@ function ImageInput({ onChange, value }) {
         throw new Error("Please select a valid image file");
       }
 
-      // Validate file size (max 5MB)
+      // Validate file size 
       if (file.size > 5 * 1024 * 1024) {
         throw new Error("Image size should be less than 5MB");
       }
@@ -33,7 +33,7 @@ function ImageInput({ onChange, value }) {
       // Get auth token
       const token = await getToken();
 
-      // First, get the pre-signed URL  
+      // get the pre-signed URL  
       const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/products/images`, {
         method: "POST",
         headers: {

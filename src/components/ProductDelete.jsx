@@ -104,4 +104,4 @@ const ProductDeleteModal = ({ product, isOpen, onClose }) => {
   );
 };
 
-export default ProductDeleteModal;
+export default ProductDelete;

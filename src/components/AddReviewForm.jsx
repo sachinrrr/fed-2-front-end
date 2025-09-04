@@ -10,7 +10,7 @@ function AddReviewForm({ productId, onReviewAdded }) {
   const [reviewText, setReviewText] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   
-  const { user, isSignedIn } = useUser();
+  const {isSignedIn } = useUser();
   const [createReview] = useCreateReviewMutation();
 
   const handleSubmit = async (e) => {

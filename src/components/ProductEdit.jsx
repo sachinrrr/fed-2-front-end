@@ -192,4 +192,4 @@ const ProductEditModal = ({ product, isOpen, onClose, onSuccess }) => {
   );
 };
 
-export default ProductEditModal;
+export default ProductEdit;

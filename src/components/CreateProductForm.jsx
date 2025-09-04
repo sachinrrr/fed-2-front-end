@@ -59,7 +59,6 @@ function CreateProductForm({ categories }) {
       setErrorMessage("");
       setSuccessMessage("");
       
-      // Clean the values before sending
       const productData = {
         categoryId: values.categoryId,
         name: values.name,
@@ -67,7 +66,7 @@ function CreateProductForm({ categories }) {
         image: values.image,
         stock: values.stock,
         price: values.price,
-        // Only include colorId if it's not "none" and not empty
+        
         ...(values.colorId && values.colorId !== "none" && values.colorId !== "" ? { colorId: values.colorId } : {}),
       };
       
