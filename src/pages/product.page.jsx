@@ -4,10 +4,10 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "../lib/features/cartSlice";
 import { Button } from "../components/ui/button";
 import { useState } from "react";
-import { Star, ShoppingCart, Package, Edit, Trash2, Settings } from "lucide-react";
+import { ShoppingCart, Package, Edit, Trash2, Settings } from "lucide-react";
 import { useUser } from "@clerk/clerk-react";
-import ProductEditModal from "../components/ProductEdit";
-import ProductDeleteModal from "../components/ProductDelete";
+import ProductEdit from "../components/ProductEdit";
+import ProductDelete from "../components/ProductDelete";
 import ReviewList from "../components/ReviewList";
 import AddReviewForm from "../components/AddReviewForm";
 import ReviewSummary from "../components/ReviewSummary";
@@ -274,7 +274,7 @@ function ProductPage() {
       {/* Admin Modals */}
       {isAdmin && (
         <>
-          <ProductEditModal
+          <ProductEdit
             product={product}
             isOpen={showEditModal}
             onClose={() => setShowEditModal(false)}
@@ -283,7 +283,7 @@ function ProductPage() {
               // due to cache invalidation in the updateProduct mutation
             }}
           />
-          <ProductDeleteModal
+          <ProductDelete
             product={product}
             isOpen={showDeleteModal}
             onClose={() => setShowDeleteModal(false)}

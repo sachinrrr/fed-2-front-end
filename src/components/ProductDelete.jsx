@@ -4,7 +4,7 @@ import { Button } from "./ui/button";
 import { useDeleteProductMutation } from "../lib/api";
 import { useNavigate } from "react-router-dom";
 
-const ProductDeleteModal = ({ product, isOpen, onClose }) => {
+const ProductDelete = ({ product, isOpen, onClose }) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteProduct] = useDeleteProductMutation();
   const navigate = useNavigate();

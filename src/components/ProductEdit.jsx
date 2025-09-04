@@ -3,7 +3,7 @@ import { X, Save, AlertTriangle } from "lucide-react";
 import { Button } from "./ui/button";
 import { useUpdateProductMutation } from "../lib/api";
 
-const ProductEditModal = ({ product, isOpen, onClose, onSuccess }) => {
+const ProductEdit = ({ product, isOpen, onClose, onSuccess }) => {
   const [formData, setFormData] = useState({
     name: "",
     price: "",
