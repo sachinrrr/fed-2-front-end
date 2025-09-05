@@ -203,16 +203,18 @@ function ProductPage() {
                 </span>
                 <div className="flex items-center border border-gray-300 rounded-md">
                   <button
+                    type="button"
                     onClick={decrementQuantity}
-                    className="px-3 py-1 border-r border-gray-300 hover:bg-gray-100"
+                    className="px-3 py-1 border-r border-gray-300 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
                     disabled={quantity <= 1}
                   >
                     -
                   </button>
                   <span className="px-4 py-1">{quantity}</span>
                   <button
+                    type="button"
                     onClick={incrementQuantity}
-                    className="px-3 py-1 border-l border-gray-300 hover:bg-gray-100"
+                    className="px-3 py-1 border-l border-gray-300 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
                     disabled={quantity >= product.stock}
                   >
                     +

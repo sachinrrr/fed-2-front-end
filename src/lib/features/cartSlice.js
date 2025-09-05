@@ -14,10 +14,10 @@ export const cartSlice = createSlice({
         (el) => el.product._id === newItem._id
       );
       if (!foundItem) {
-        state.cartItems.push({ product: action.payload, quantity: 1 });
+        state.cartItems.push({ product: action.payload, quantity: newItem.quantity || 1 });
         return;
       }
-      foundItem.quantity += 1;
+      foundItem.quantity += (newItem.quantity || 1);
     },
     removeFromCart: (state, action) => {
       const productId = action.payload;
