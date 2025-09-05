@@ -20,15 +20,18 @@ function ProductPage() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   
+  //check if user is admin
   const { user, isLoaded } = useUser();
   const isAdmin = isLoaded && user?.publicMetadata?.role === "admin";
 
+  //fetch product by id
   const {
     data: product,
     isLoading,
     error,
   } = useGetProductByIdQuery(productId);
 
+  //add to cart
   const handleAddToCart = () => {
     if (product && product.stock > 0) {
       dispatch(
@@ -101,7 +104,7 @@ function ProductPage() {
 
           {/* Product Information */}
           <div className="space-y-6">
-            {/* Breadcrumb */}
+            {/* Breadcrumb navigation*/}
             <nav className="text-sm text-gray-500">
               <span>Shop</span> <span className="mx-2">/</span>
               {product.categoryId && (
@@ -257,8 +260,6 @@ function ProductPage() {
               <AddReviewForm 
                 productId={productId}
                 onReviewAdded={() => {
-                  // The RTK Query will automatically refetch the product data
-                  // due to cache invalidation in the createReview mutation
                 }}
               />
             </div>
@@ -279,8 +280,6 @@ function ProductPage() {
             isOpen={showEditModal}
             onClose={() => setShowEditModal(false)}
             onSuccess={() => {
-              // The RTK Query will automatically refetch the product data
-              // due to cache invalidation in the updateProduct mutation
             }}
           />
           <ProductDelete

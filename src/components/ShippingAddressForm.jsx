@@ -18,6 +18,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { z } from "zod";
 
+//Frontend schema for the shipping address form.
 const shippingAddresFormSchema = z.object({
   line_1: z.string().min(1).max(50),
   line_2: z.string().min(1).max(50).optional(),
@@ -59,6 +60,7 @@ function ShippingAddressForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
+        {/* Address Line 1 field*/}
         <FormField
           control={form.control}
           name="line_1"
@@ -73,6 +75,7 @@ function ShippingAddressForm() {
             </FormItem>
           )}
         />
+        {/* Address Line 2 field*/}
         <FormField
           control={form.control}
           name="line_2"
@@ -87,6 +90,7 @@ function ShippingAddressForm() {
             </FormItem>
           )}
         />
+        {/* City field*/}
         <FormField
           control={form.control}
           name="city"
@@ -101,6 +105,7 @@ function ShippingAddressForm() {
             </FormItem>
           )}
         />
+        {/* Phone field*/}
         <FormField
           control={form.control}
           name="phone"

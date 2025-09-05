@@ -48,16 +48,6 @@ function SimpleProductCard(props) {
               </div>
             </div>
           </div>
-
-          {/* Wishlist Button */}
-          <button
-            onClick={handleLike}
-            className="absolute top-4 right-4 bg-white/80 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-white hover:scale-110"
-          >
-            <Heart 
-              className={`w-4 h-4 ${isLiked ? 'fill-red-500 text-red-500' : 'text-gray-600'}`} 
-            />
-          </button>
         </div>
 
         {/* Content */}

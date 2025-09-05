@@ -7,10 +7,12 @@ function CartPage() {
   const cart = useSelector((state) => state.cart.cartItems);
   const dispatch = useDispatch();
 
+  //remove item from cart
   const handleRemoveItem = (productId) => {
     dispatch(removeFromCart(productId));
   };
 
+  //update quantity of item in cart
   const handleUpdateQuantity = (productId, newQuantity) => {
     if (newQuantity <= 0) {
       dispatch(removeFromCart(productId));
@@ -19,12 +21,14 @@ function CartPage() {
     }
   };
 
+  //clear all items from cart
   const handleClearCart = () => {
     if (window.confirm('Are you sure you want to clear your entire cart?')) {
       dispatch(clearCart());
     }
   };
 
+  //return cart page
   return (
     <main className="px-4 lg:px-16 min-h-screen py-8">
       <div className="flex justify-between items-center mb-8">
@@ -39,7 +43,6 @@ function CartPage() {
           </button>
         )}
       </div>
-
       {cart.length > 0 ? (
         <>
           <div className="mb-8">

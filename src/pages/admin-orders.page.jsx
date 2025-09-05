@@ -9,14 +9,17 @@ function AdminOrdersPage() {
   const [paymentFilter, setPaymentFilter] = useState("all");
   const [expandedOrders, setExpandedOrders] = useState(new Set());
 
+  //fetch all orders
   const {
     data: orders,
     isLoading,
     error,
   } = useGetAllOrdersQuery();
 
+  //update order status
   const [updateOrderStatus] = useUpdateOrderStatusMutation();
 
+  //map order status to icon 
   const getStatusIcon = (status) => {
     switch (status) {
       case "PENDING":
@@ -32,6 +35,7 @@ function AdminOrdersPage() {
     }
   };
 
+  //map order status to color
   const getStatusColor = (status) => {
     switch (status) {
       case "PENDING":
@@ -47,6 +51,7 @@ function AdminOrdersPage() {
     }
   };
 
+  //map payment status to color
   const getPaymentStatusColor = (status) => {
     switch (status) {
       case "PAID":
@@ -60,18 +65,21 @@ function AdminOrdersPage() {
     }
   };
 
+  //calculate order total
   const calculateOrderTotal = (items) => {
     return items.reduce((total, item) => {
       return total + (item.productId?.price || 0) * item.quantity;
     }, 0).toFixed(2);
   };
 
+  //filter options for orders
   const filteredOrders = orders?.filter((order) => {
     const statusMatch = statusFilter === "all" || order.orderStatus === statusFilter;
     const paymentMatch = paymentFilter === "all" || order.paymentStatus === paymentFilter;
     return statusMatch && paymentMatch;
   });
 
+  //return order status data for dashboard Summary Cards
   const getOrderStats = () => {
     if (!orders) return { total: 0, pending: 0, fulfilled: 0, revenue: 0 };
     
@@ -90,6 +98,7 @@ function AdminOrdersPage() {
 
   const stats = getOrderStats();
 
+  //handle status update
   const handleStatusUpdate = async (orderId, newStatus, isPaymentStatus = false) => {
     try {
       const updateData = {
@@ -98,15 +107,15 @@ function AdminOrdersPage() {
       };
       await updateOrderStatus(updateData).unwrap();
       
-      // Show success feedback (in a real app, you'd use a toast library)
       console.log(`✅ Successfully updated ${isPaymentStatus ? 'payment' : 'order'} status to ${newStatus}`);
     } catch (error) {
       console.error('❌ Failed to update order status:', error);
-      // In a real app, you'd show an error toast here
+      
       alert(`Failed to update ${isPaymentStatus ? 'payment' : 'order'} status. Please try again.`);
     }
   };
 
+  //order details expansion function
   const toggleOrderExpansion = (orderId) => {
     const newExpanded = new Set(expandedOrders);
     if (newExpanded.has(orderId)) {
@@ -117,6 +126,7 @@ function AdminOrdersPage() {
     setExpandedOrders(newExpanded);
   };
 
+  //loading state
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -125,6 +135,7 @@ function AdminOrdersPage() {
     );
   }
 
+  //error state
   if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -144,6 +155,7 @@ function AdminOrdersPage() {
     );
   }
 
+  //return order management page
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

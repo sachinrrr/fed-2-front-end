@@ -9,6 +9,7 @@ const ProductDelete = ({ product, isOpen, onClose }) => {
   const [deleteProduct] = useDeleteProductMutation();
   const navigate = useNavigate();
 
+  //Handles the delete product.
   const handleDelete = async () => {
     setIsDeleting(true);
 

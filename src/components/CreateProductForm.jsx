@@ -24,6 +24,7 @@ import {
   SelectValue,
 } from "./ui/select";
 
+//frontend schema for the create product form.
 const createProductFormSchema = z.object({
   categoryId: z.string().min(1, "Category is required"),
   colorId: z.string().optional(),
@@ -38,6 +39,7 @@ function CreateProductForm({ categories }) {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
+  //useForm hook for the create product form.
   const form = useForm({
     resolver: zodResolver(createProductFormSchema),
     defaultValues: {
@@ -59,6 +61,7 @@ function CreateProductForm({ categories }) {
       setErrorMessage("");
       setSuccessMessage("");
       
+      //Creates the product data to be sent to the backend.
       const productData = {
         categoryId: values.categoryId,
         name: values.name,
@@ -69,8 +72,6 @@ function CreateProductForm({ categories }) {
         
         ...(values.colorId && values.colorId !== "none" && values.colorId !== "" ? { colorId: values.colorId } : {}),
       };
-      
-      console.log("Sending product data:", productData);
       
       await createProduct(productData).unwrap();
       
@@ -107,6 +108,7 @@ function CreateProductForm({ categories }) {
           </div>
         )}
 
+        {/* Category field*/}
         <FormField
           control={form.control}
           name="categoryId"
@@ -132,6 +134,7 @@ function CreateProductForm({ categories }) {
           )}
         />
 
+        {/* Color field*/}
         <FormField
           control={form.control}
           name="colorId"
@@ -167,6 +170,8 @@ function CreateProductForm({ categories }) {
             </FormItem>
           )}
         />
+
+        {/* product Name field*/}
         <FormField
           control={form.control}
           name="name"
@@ -181,6 +186,7 @@ function CreateProductForm({ categories }) {
           )}
         />
 
+        {/* product Description field*/}
         <FormField
           control={form.control}
           name="description"
@@ -199,6 +205,7 @@ function CreateProductForm({ categories }) {
           )}
         />
 
+        {/* product Image field*/}
         <FormField
           control={form.control}
           name="image"
@@ -213,6 +220,7 @@ function CreateProductForm({ categories }) {
           )}
         />
 
+        {/* product Stock field*/}
         <FormField
           control={form.control}
           name="stock"
@@ -235,6 +243,7 @@ function CreateProductForm({ categories }) {
           )}
         />
 
+        {/* product Price field*/}
         <FormField
           control={form.control}
           name="price"
@@ -258,6 +267,7 @@ function CreateProductForm({ categories }) {
           )}
         />
 
+        {/* Create Product button*/}
         <div className="pt-4">
           <Button 
             type="submit" 

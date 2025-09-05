@@ -1,6 +1,7 @@
 import { useGetUserOrdersQuery } from "../lib/api";
 import { Package, Truck, CheckCircle, XCircle, Calendar, CreditCard, MapPin } from "lucide-react";
 
+//fetch user orders
 function MyOrdersPage() {
   const {
     data: orders,
@@ -8,6 +9,7 @@ function MyOrdersPage() {
     error,
   } = useGetUserOrdersQuery();
 
+  //map order status to icon
   const getStatusIcon = (status) => {
     switch (status) {
       case "PENDING":
@@ -23,6 +25,7 @@ function MyOrdersPage() {
     }
   };
 
+  //map order status to color
   const getStatusColor = (status) => {
     switch (status) {
       case "PENDING":
@@ -38,6 +41,7 @@ function MyOrdersPage() {
     }
   };
 
+  //map payment status to color
   const getPaymentStatusColor = (status) => {
     switch (status) {
       case "PAID":
@@ -51,6 +55,7 @@ function MyOrdersPage() {
     }
   };
 
+  //calculate order total
   const calculateOrderTotal = (items) => {
     return items.reduce((total, item) => {
       return total + (item.productId?.price || 0) * item.quantity;
@@ -80,6 +85,7 @@ function MyOrdersPage() {
     );
   }
 
+  //return my orders page
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">

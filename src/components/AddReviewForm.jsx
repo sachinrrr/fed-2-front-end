@@ -13,6 +13,7 @@ function AddReviewForm({ productId, onReviewAdded }) {
   const {isSignedIn } = useUser();
   const [createReview] = useCreateReviewMutation();
 
+  //Handles the form submission for creating a product review.
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -58,6 +59,7 @@ function AddReviewForm({ productId, onReviewAdded }) {
     }
   };
 
+  //Renders the stars for the rating selection.
   const renderStars = () => {
     return [...Array(5)].map((_, index) => {
       const starValue = index + 1;

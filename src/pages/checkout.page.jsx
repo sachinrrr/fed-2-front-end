@@ -15,10 +15,12 @@ function CheckoutPage() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState("");
 
+  //if cart is empty, redirect to home page
   if (cart.length === 0) {
     return <Navigate to="/" />;
   }
 
+  //handle proceed to payment
   const handleProceedToPayment = async () => {
     try {
       setError("");

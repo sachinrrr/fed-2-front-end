@@ -14,7 +14,7 @@ function HomePage() {
   const sessionId = searchParams.get("session_id");
   const orderId = searchParams.get("order_id");
 
-  // Check payment status with Stripe (only when we have a session ID)
+  // Check payment status with Stripe 
   const { data: sessionStatus, error: sessionError } = useGetCheckoutSessionStatusQuery(sessionId, {
     skip: !sessionId || paymentSuccess !== "success"
   });

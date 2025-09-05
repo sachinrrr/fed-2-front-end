@@ -1,5 +1,6 @@
 import { Star } from "lucide-react";
 
+//Renders the list of reviews for a product.
 function ReviewList({ reviews }) {
   if (!reviews || reviews.length === 0) {
     return (
@@ -10,6 +11,7 @@ function ReviewList({ reviews }) {
     );
   }
 
+  //Renders the stars for the rating.
   const renderStars = (rating) => {
     return [...Array(5)].map((_, index) => (
       <Star
@@ -23,6 +25,7 @@ function ReviewList({ reviews }) {
     ));
   };
 
+  //Formats the date of the review.
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',

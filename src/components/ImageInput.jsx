@@ -7,6 +7,7 @@ function ImageInput({ onChange, value }) {
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState("");
 
+  //Handles the file change for the image input.
   const handleFileChange = async (e) => {
     try {
       setUploadError("");

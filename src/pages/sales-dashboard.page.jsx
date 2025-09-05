@@ -5,18 +5,18 @@ import { Button } from '../components/ui/button';
 import { 
   ChartContainer, 
   ChartTooltip, 
-  ChartTooltipContent, 
-  ChartLegend, 
-  ChartLegendContent 
+  ChartTooltipContent,  
 } from '../components/ui/chart';
 import { Line, LineChart, XAxis, YAxis, CartesianGrid } from 'recharts';
 
+//sales dashboard page
 const SalesDashboard = () => {
   const [selectedPeriod, setSelectedPeriod] = useState(7);
   
   const { data: salesData7Days, isLoading: isLoading7Days, error: error7Days } = useGetSalesDataQuery(7);
   const { data: salesData30Days, isLoading: isLoading30Days, error: error30Days } = useGetSalesDataQuery(30);
 
+  //format currency
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -52,7 +52,7 @@ const SalesDashboard = () => {
   const chartConfig = {
     totalSales: {
       label: "Daily Sales",
-      color: "#2563eb" // Solid blue color
+      color: "#2563eb" 
     }
   };
 
@@ -81,7 +81,7 @@ const SalesDashboard = () => {
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Sales Dashboard</h1>
-        <p className="text-gray-600">Monitor your business performance and sales trends</p>
+        <p className="text-gray-600">Monitor business performance and sales trends</p>
       </div>
 
       {/* Period Selector */}

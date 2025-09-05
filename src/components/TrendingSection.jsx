@@ -91,7 +91,7 @@ function TrendingSection() {
       {/* Products Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-4 gap-4 md:gap-x-4 md:gap-y-8">
         {products && products.length > 0 ? (
-          // Products are already limited by the API call
+          
           products.map((product) => (
             <SimpleProductCard key={product._id} product={product} />
           ))

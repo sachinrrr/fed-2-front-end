@@ -1,5 +1,6 @@
 import { Star } from "lucide-react";
 
+//Renders the summary of the reviews for a product.
 function ReviewSummary({ reviews }) {
   if (!reviews || reviews.length === 0) {
     return (
@@ -14,9 +15,11 @@ function ReviewSummary({ reviews }) {
     );
   }
 
+  //Calculates the average rating.
   const averageRating = reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length;
-  const roundedRating = Math.round(averageRating * 10) / 10; // Round to 1 decimal place
+  const roundedRating = Math.round(averageRating * 10) / 10; 
 
+  //Renders the stars for the rating.
   const renderStars = (rating) => {
     return [...Array(5)].map((_, index) => {
       const filled = index < Math.floor(rating);

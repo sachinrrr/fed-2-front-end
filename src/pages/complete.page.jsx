@@ -9,15 +9,14 @@ function CompletePage() {
   const orderId = searchParams.get("order_id");
   const dispatch = useDispatch();
 
-  console.log("CompletePage loaded with params:", { sessionId, orderId });
-
-  // Clear cart when payment is complete
+  //clear cart when payment is complete
   useEffect(() => {
     if (sessionId) {
       dispatch(clearCart());
     }
   }, [sessionId, dispatch]);
 
+  //return complete page
   return (
     <main className="px-4 lg:px-16 min-h-screen py-8">
       <div className="max-w-2xl mx-auto text-center">
