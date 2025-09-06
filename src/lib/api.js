@@ -6,7 +6,6 @@
    export const Api = createApi({
      reducerPath: "Api",
      baseQuery: fetchBaseQuery({
-             // Use environment variable for base URL
       baseUrl: `${import.meta.env.VITE_BASE_URL}/api`,
        prepareHeaders: async (headers) => {
          return new Promise((resolve) => {
@@ -62,7 +61,7 @@
          query: () => `/colors`,
          providesTags: ['Color'],
        }),
-             createProduct: build.mutation({
+      createProduct: build.mutation({
         query: (product) => ({
           url: "/products",
           method: "POST",

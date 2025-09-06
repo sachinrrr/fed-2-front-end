@@ -1,5 +1,6 @@
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
+//upload product image to the backend
 export const putImage = async ({ file }) => {
   const res = await fetch(`${BASE_URL}/products/images`, {
     method: "POST",
