@@ -135,16 +135,18 @@ export default function Navigation() {
               </div>
             )}
             
-            {/* My Orders - Temporarily enabled for admins for testing */}
+            {/* My Orders - Show only for non-admin users */}
             <SignedIn>
-              <Link
-                to="/my-orders"
-                aria-label="My Orders"
-                className="p-1 flex items-center space-x-1 hover:text-gray-600"
-              >
-                <Package size={20} />
-                <span className="hidden sm:inline text-sm">My Orders</span>
-              </Link>
+              {!isAdmin && (
+                <Link
+                  to="/my-orders"
+                  aria-label="My Orders"
+                  className="p-1 flex items-center space-x-1 hover:text-gray-600"
+                >
+                  <Package size={20} />
+                  <span className="hidden sm:inline text-sm">My Orders</span>
+                </Link>
+              )}
             </SignedIn>
 
             {/* Search */}
@@ -206,16 +208,18 @@ export default function Navigation() {
             {/* Divider */}
             <div className="border-t border-gray-200 my-2"></div>
             
-            {/* Mobile: My Orders - Temporarily enabled for admins for testing */}
+            {/* Mobile: My Orders - Show only for non-admin users */}
             <SignedIn>
-              <Link
-                to="/my-orders"
-                className="flex items-center space-x-2 px-3 py-2 text-base font-medium hover:bg-gray-100 rounded-md"
-                onClick={closeMobileMenu}
-              >
-                <Package size={16} />
-                <span>My Orders</span>
-              </Link>
+              {!isAdmin && (
+                <Link
+                  to="/my-orders"
+                  className="flex items-center space-x-2 px-3 py-2 text-base font-medium hover:bg-gray-100 rounded-md"
+                  onClick={closeMobileMenu}
+                >
+                  <Package size={16} />
+                  <span>My Orders</span>
+                </Link>
+              )}
             </SignedIn>
             
             {/* Mobile: Admin Menu */}
