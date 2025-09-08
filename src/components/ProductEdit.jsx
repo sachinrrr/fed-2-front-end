@@ -12,6 +12,7 @@ const ProductEdit = ({ product, isOpen, onClose, onSuccess }) => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  //api call to update a product
   const [updateProduct] = useUpdateProductMutation();
 
   useEffect(() => {

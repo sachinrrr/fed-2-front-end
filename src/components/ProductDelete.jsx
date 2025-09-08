@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 
 const ProductDelete = ({ product, isOpen, onClose }) => {
   const [isDeleting, setIsDeleting] = useState(false);
+
+  //api call to delete a product
   const [deleteProduct] = useDeleteProductMutation();
   const navigate = useNavigate();
 

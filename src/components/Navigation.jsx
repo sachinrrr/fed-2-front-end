@@ -69,7 +69,6 @@ export default function Navigation() {
       label: "Manage Orders",
       icon: FileText,
     },
-    // Temporarily enabled for testing
     {
       path: "/my-orders",
       label: "My Orders",

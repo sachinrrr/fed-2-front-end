@@ -10,7 +10,10 @@ function AddReviewForm({ productId, onReviewAdded }) {
   const [reviewText, setReviewText] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   
+  //user authentication check
   const {isSignedIn } = useUser();
+
+  //api call to create a review
   const [createReview] = useCreateReviewMutation();
 
   //Handles the form submission for creating a product review.

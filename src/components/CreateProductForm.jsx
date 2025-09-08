@@ -53,6 +53,7 @@ function CreateProductForm({ categories }) {
     },
   });
 
+  //api call to create a product
   const [createProduct, { isLoading }] = useCreateProductMutation();
   const { data: colors, isLoading: colorsLoading } = useGetAllColorsQuery();
 
